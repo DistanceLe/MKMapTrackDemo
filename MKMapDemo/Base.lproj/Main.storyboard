@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vjY-ZI-lWs">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.68672025889331145" green="1" blue="0.86354142882461371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="DVE-XK-o3g">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="zmZ-xE-nhY">
+                            <connections>
+                                <segue destination="FMs-s9-F89" kind="push" id="Wpw-Sf-eLi"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1055.2" y="122.78860569715144"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="mQT-wP-A9X">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="FMs-s9-F89" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lke-IO-nkb"/>
+                        <viewControllerLayoutGuide type="bottom" id="H2E-ck-ZgS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mc7-K2-55Y">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xru-mi-3ll">
+                                <rect key="frame" x="16" y="509" width="70" height="44"/>
+                                <color key="backgroundColor" red="1" green="0.82002033842384858" blue="0.60202960638619318" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="手表模式">
+                                    <color key="titleColor" red="1" green="0.23248740260002387" blue="0.9033974275716421" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="1" green="0.19119459452469845" blue="0.15265931329511684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="phoneModel:" destination="FMs-s9-F89" eventType="touchUpInside" id="k9Q-0m-UP6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HqH-AG-zc0">
+                                <rect key="frame" x="125" y="509" width="70" height="44"/>
+                                <color key="backgroundColor" red="1" green="0.82002033842384858" blue="0.60202960638619318" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="aA2-jc-CFI"/>
+                                    <constraint firstAttribute="height" constant="44" id="cLv-ak-DMz"/>
+                                </constraints>
+                                <state key="normal" title="开始运动"/>
+                                <connections>
+                                    <action selector="startRun:" destination="FMs-s9-F89" eventType="touchUpInside" id="okM-TX-KxI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ak-u9-xpX">
+                                <rect key="frame" x="234" y="509" width="70" height="44"/>
+                                <color key="backgroundColor" red="1" green="0.82002033842384858" blue="0.60202960638619318" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="随机增加"/>
+                                <connections>
+                                    <action selector="addRandomPoint:" destination="FMs-s9-F89" eventType="touchUpInside" id="XUI-Yj-QN4"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fbL-WX-VxV">
+                                <rect key="frame" x="16" y="322" width="288" height="179"/>
+                                <color key="backgroundColor" red="0.9712982177734375" green="0.9712982177734375" blue="0.9712982177734375" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="179" id="sKJ-5U-AHl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HqH-AG-zc0" firstAttribute="height" secondItem="Xru-mi-3ll" secondAttribute="height" id="0Nh-gy-KQl"/>
+                            <constraint firstItem="3Ak-u9-xpX" firstAttribute="height" secondItem="Xru-mi-3ll" secondAttribute="height" id="1dG-OD-1KF"/>
+                            <constraint firstItem="HqH-AG-zc0" firstAttribute="centerX" secondItem="mc7-K2-55Y" secondAttribute="centerX" id="9uA-gs-ikw"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ak-u9-xpX" secondAttribute="trailing" constant="16" id="DEo-uy-Bdd"/>
+                            <constraint firstItem="fbL-WX-VxV" firstAttribute="leading" secondItem="mc7-K2-55Y" secondAttribute="leading" constant="16" id="G9Z-se-VGs"/>
+                            <constraint firstItem="3Ak-u9-xpX" firstAttribute="centerY" secondItem="Xru-mi-3ll" secondAttribute="centerY" id="IBg-eg-Tp0"/>
+                            <constraint firstItem="HqH-AG-zc0" firstAttribute="centerY" secondItem="Xru-mi-3ll" secondAttribute="centerY" id="Jay-00-6H8"/>
+                            <constraint firstItem="H2E-ck-ZgS" firstAttribute="top" secondItem="HqH-AG-zc0" secondAttribute="bottom" constant="15" id="LPs-zv-Vza"/>
+                            <constraint firstItem="Xru-mi-3ll" firstAttribute="leading" secondItem="mc7-K2-55Y" secondAttribute="leading" constant="16" id="Mv2-7Y-OwV"/>
+                            <constraint firstItem="3Ak-u9-xpX" firstAttribute="width" secondItem="Xru-mi-3ll" secondAttribute="width" id="dWf-Ho-eGU"/>
+                            <constraint firstItem="HqH-AG-zc0" firstAttribute="width" secondItem="Xru-mi-3ll" secondAttribute="width" id="oGu-Ts-58R"/>
+                            <constraint firstItem="3Ak-u9-xpX" firstAttribute="top" secondItem="fbL-WX-VxV" secondAttribute="bottom" constant="8" id="qA9-hy-Dgt"/>
+                            <constraint firstAttribute="trailing" secondItem="fbL-WX-VxV" secondAttribute="trailing" constant="16" id="yK3-eg-mBX"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="cws-G6-2aT">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="fMR-OC-twh">
+                            <connections>
+                                <action selector="rightClick:" destination="FMs-s9-F89" id="dMa-3r-04h"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="contentTextView" destination="fbL-WX-VxV" id="MFp-ZX-648"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B8c-WZ-1aw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1820" y="122.78860569715144"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pUv-kQ-nY0">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vjY-ZI-lWs" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="coH-D0-dwB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="nJi-VJ-a4I"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qCq-wK-E4j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="214" y="123"/>
+        </scene>
+    </scenes>
+</document>
