@@ -99,7 +99,7 @@
     self.locationManager.allowsBackgroundLocationUpdates = YES;
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = 5.0;//10米定位一次
+    self.locationManager.distanceFilter = 5.0;//5米定位一次
 }
 
 -(void)callBackHandler:(MapLocationBlock)handler{
@@ -217,9 +217,9 @@
 }
 
 //-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
-//    
+//
 //    NSLog(@"...%@", NSStringFromClass([annotation class]));
-//    
+//
 //    return nil;
 //}
 
@@ -236,9 +236,9 @@
         MKCoordinateRegion region = MKCoordinateRegionMake(userLocation.coordinate, span);
         [mapView setRegion:region animated:YES];
     }
-//    if (userLocation && !self.isWatchMode && self.isRun) {
-//        [self addTrackMapPoint:@[userLocation.location]];
-//    }
+    //    if (userLocation && !self.isWatchMode && self.isRun) {
+    //        [self addTrackMapPoint:@[userLocation.location]];
+    //    }
     if (self.tempBlock && self.currentLocation) {
         self.tempBlock(YES, @[@(self.currentLocation.coordinate.latitude), @(self.currentLocation.coordinate.longitude)]);
     }
@@ -265,9 +265,11 @@
 
 #pragma mark - ================ LocationDelegate ==================
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-
+    
     if (locations.count && !self.isWatchMode && self.isRun) {
         CLLocation* location = locations.firstObject;
+        
+        //系统坐标系 -> 高德坐标系  有偏移
         CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(location.coordinate.latitude-0.003, location.coordinate.longitude+0.0049);
         location = [[CLLocation alloc]initWithCoordinate:coordinate altitude:location.altitude horizontalAccuracy:location.horizontalAccuracy verticalAccuracy:location.verticalAccuracy course:location.course speed:location.speed timestamp:location.timestamp];
         [self addTrackPoint:@[location]];
@@ -279,7 +281,6 @@
     if (self.tempBlock) {
         CLLocation* location = locations.firstObject;
         self.tempBlock(NO, @[@(location.coordinate.latitude), @(location.coordinate.longitude)]);
-        
     }
 }
 

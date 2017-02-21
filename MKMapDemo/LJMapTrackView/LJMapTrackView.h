@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-typedef void(^MapLocationBlock)(BOOL isMapLoction, id value);
+typedef void(^MapLocationBlock)(BOOL isMapLoction, NSArray* coordinate);
 
 @interface LJMapTrackView : UIView
 
