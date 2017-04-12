@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A3D15791E9DB74F00336A89 /* GradientPolylineOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D15781E9DB74F00336A89 /* GradientPolylineOverlay.m */; };
+		2A3D157C1E9DBC2800336A89 /* GradientPolylineRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D157B1E9DBC2800336A89 /* GradientPolylineRenderer.m */; };
 		2AB2C4A71E4C08A500E7D654 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2C4A61E4C08A500E7D654 /* main.m */; };
 		2AB2C4AA1E4C08A500E7D654 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2C4A91E4C08A500E7D654 /* AppDelegate.m */; };
 		2AB2C4AD1E4C08A500E7D654 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2C4AC1E4C08A500E7D654 /* ViewController.m */; };
@@ -36,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A3D15771E9DB74F00336A89 /* GradientPolylineOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineOverlay.h; sourceTree = "<group>"; };
+		2A3D15781E9DB74F00336A89 /* GradientPolylineOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineOverlay.m; sourceTree = "<group>"; };
+		2A3D157A1E9DBC2800336A89 /* GradientPolylineRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientPolylineRenderer.h; sourceTree = "<group>"; };
+		2A3D157B1E9DBC2800336A89 /* GradientPolylineRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientPolylineRenderer.m; sourceTree = "<group>"; };
 		2AB2C4A21E4C08A500E7D654 /* MKMapDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MKMapDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AB2C4A61E4C08A500E7D654 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2AB2C4A81E4C08A500E7D654 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -151,6 +157,10 @@
 			children = (
 				2AB2C4E21E4C718F00E7D654 /* LJMapTrackView.h */,
 				2AB2C4E31E4C718F00E7D654 /* LJMapTrackView.m */,
+				2A3D15771E9DB74F00336A89 /* GradientPolylineOverlay.h */,
+				2A3D15781E9DB74F00336A89 /* GradientPolylineOverlay.m */,
+				2A3D157A1E9DBC2800336A89 /* GradientPolylineRenderer.h */,
+				2A3D157B1E9DBC2800336A89 /* GradientPolylineRenderer.m */,
 			);
 			path = LJMapTrackView;
 			sourceTree = "<group>";
@@ -298,7 +308,9 @@
 			files = (
 				2AB2C4AD1E4C08A500E7D654 /* ViewController.m in Sources */,
 				2AB2C4AA1E4C08A500E7D654 /* AppDelegate.m in Sources */,
+				2A3D15791E9DB74F00336A89 /* GradientPolylineOverlay.m in Sources */,
 				2AB2C4A71E4C08A500E7D654 /* main.m in Sources */,
+				2A3D157C1E9DBC2800336A89 /* GradientPolylineRenderer.m in Sources */,
 				2AB2C4E41E4C718F00E7D654 /* LJMapTrackView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

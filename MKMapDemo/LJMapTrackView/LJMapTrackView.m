@@ -7,6 +7,8 @@
 //
 
 #import "LJMapTrackView.h"
+#import "GradientPolylineOverlay.h"
+#import "GradientPolylineRenderer.h"
 
 @interface LJMapTrackView ()<MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -109,30 +111,7 @@
 -(void)addTrackPoint:(NSArray<CLLocation *> *)coordinates{
     if (coordinates.count >= 1) {
         
-        NSMutableArray<CLLocation *>* tempArray = [NSMutableArray new];
-        if (self.locations.count>0) {
-            [tempArray addObject:self.locations.lastObject];
-        }
-        [self.locations addObjectsFromArray:coordinates];
-        [tempArray addObjectsFromArray:coordinates];
-        if (tempArray.count <= 1) {
-            return;
-        }
-        
-        CLLocationCoordinate2D  pointCoords[tempArray.count];
-        for (NSInteger i = 0; i<tempArray.count; i++) {
-            pointCoords[i] = tempArray[i].coordinate;
-        }
-        
-        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
-        line.subtitle = @"location";
-        [self.mapView addOverlay:line];
-    }
-}
-
--(void)addTrackMapPoint:(NSArray<CLLocation *> *)coordinates{
-    if (coordinates.count >= 1) {
-        
+        //取出 已有路径的 最后一个点，和要增加的点 合起来。
         NSMutableArray<CLLocation *>* tempArray = [NSMutableArray new];
         if (self.mapLocations.count>0) {
             [tempArray addObject:self.mapLocations.lastObject];
@@ -143,13 +122,48 @@
             return;
         }
         
+        //遍历所有点
         CLLocationCoordinate2D  pointCoords[tempArray.count];
+        float velocitys[tempArray.count];
+        
         for (NSInteger i = 0; i<tempArray.count; i++) {
             pointCoords[i] = tempArray[i].coordinate;
+//            velocitys[i] = tempArray[i].speed;
+            velocitys[i] = arc4random()%100/10.0;
         }
         
-        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
-        line.subtitle = @"map";
+        GradientPolylineOverlay* line = [[GradientPolylineOverlay alloc] initWithPoints:pointCoords velocity:velocitys count:tempArray.count];
+//        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
+//        line.subtitle = @"location";
+        [self.mapView addOverlay:line];
+    }
+}
+
+-(void)addTrackMapPoint:(NSArray<CLLocation *> *)coordinates{
+    if (coordinates.count >= 1) {
+        //取出 已有路径的 最后一个点，和要增加的点 合起来。
+        NSMutableArray<CLLocation *>* tempArray = [NSMutableArray new];
+        if (self.mapLocations.count>0) {
+            [tempArray addObject:self.mapLocations.lastObject];
+        }
+        [self.mapLocations addObjectsFromArray:coordinates];
+        [tempArray addObjectsFromArray:coordinates];
+        if (tempArray.count <= 1) {
+            return;
+        }
+        
+        //遍历所有点
+        CLLocationCoordinate2D  pointCoords[tempArray.count];
+        float velocitys[tempArray.count];
+        
+        for (NSInteger i = 0; i<tempArray.count; i++) {
+            pointCoords[i] = tempArray[i].coordinate;
+            velocitys[i] = tempArray[i].speed;
+        }
+
+        GradientPolylineOverlay* line = [[GradientPolylineOverlay alloc] initWithPoints:pointCoords velocity:velocitys count:tempArray.count];
+//        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
+//        line.subtitle = @"map";
         [self.mapView addOverlay:line];
     }
 }
@@ -246,17 +260,21 @@
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
     
-    if ([[overlay class] isSubclassOfClass:[MKPolyline class]]) {
-        MKPolylineRenderer* renderer = [[MKPolylineRenderer alloc]initWithPolyline:overlay];
-        renderer.fillColor = self.fillColor;
-        renderer.strokeColor = self.strokeColor;
-        renderer.lineWidth = self.lineWidth;
-        renderer.lineCap = kCGLineCapRound;
-        renderer.lineJoin = kCGLineJoinRound;
-        if ([[(MKPolyline*)overlay subtitle]isEqualToString:@"map"]) {
-            renderer.strokeColor = [UIColor greenColor];
-        }
-        return  renderer;
+    if ([[overlay class] isSubclassOfClass:[GradientPolylineOverlay class]]) {
+        GradientPolylineRenderer *polylineRenderer = [[GradientPolylineRenderer alloc] initWithOverlay:overlay];
+        polylineRenderer.lineWidth = 8.f;
+        return polylineRenderer;
+        
+//        MKPolylineRenderer* renderer = [[MKPolylineRenderer alloc]initWithPolyline:overlay];
+//        renderer.fillColor = self.fillColor;
+//        renderer.strokeColor = self.strokeColor;
+//        renderer.lineWidth = self.lineWidth;
+//        renderer.lineCap = kCGLineCapRound;
+//        renderer.lineJoin = kCGLineJoinRound;
+//        if ([[(MKPolyline*)overlay subtitle]isEqualToString:@"map"]) {
+//            renderer.strokeColor = [UIColor greenColor];
+//        }
+//        return  renderer;
     }
     
     return nil;
