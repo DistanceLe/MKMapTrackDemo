@@ -13,6 +13,8 @@
 @interface LJMapTrackView ()<MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property(nonatomic, strong)MKMapView*          mapView;
+@property(nonatomic, strong)MKPolygon*          backMaskPolygon;
+
 @property(nonatomic, strong)CLLocationManager*  locationManager;
 
 @property(nonatomic, strong)NSMutableArray* locations;
@@ -218,12 +220,41 @@
     }
 }
 
+/**  显示区域改变的时候 刷新背景蒙版 */
+-(void)setBackMask{
+    
+    CGFloat width = self.bounds.size.width;
+    CGFloat height = self.bounds.size.height;
+    
+    CLLocationCoordinate2D leftTop =[self.mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:self];
+    CLLocationCoordinate2D rightTop =[self.mapView convertPoint:CGPointMake(width, 0) toCoordinateFromView:self];
+    CLLocationCoordinate2D leftBottom =[self.mapView convertPoint:CGPointMake(0, height) toCoordinateFromView:self];
+    CLLocationCoordinate2D rightBottom =[self.mapView convertPoint:CGPointMake(width, height) toCoordinateFromView:self];
+    CLLocationCoordinate2D  pointCoords[4];
+    CGFloat offset = 1;
+    pointCoords[0] = CLLocationCoordinate2DMake(leftTop.latitude+offset, leftTop.longitude-offset);
+    pointCoords[1] = CLLocationCoordinate2DMake(rightTop.latitude-offset, rightTop.longitude-offset);
+    
+    pointCoords[3] = CLLocationCoordinate2DMake(leftBottom.latitude+offset, leftBottom.longitude+offset);
+    pointCoords[2] = CLLocationCoordinate2DMake(rightBottom.latitude-offset, rightBottom.longitude+offset);
+    
+    if (self.backMaskPolygon) {
+        [self.mapView removeOverlay:self.backMaskPolygon];
+    }
+    
+    MKPolygon* polygon = [MKPolygon polygonWithCoordinates:pointCoords count:4];
+    self.backMaskPolygon = polygon;
+    [self.mapView insertOverlay:self.backMaskPolygon atIndex:0 level:MKOverlayLevelAboveRoads];
+}
+
 #pragma mark - ================ Delegate ==================
 /**  地图区域改变时调用 */
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     //    [self.mapView removeFromSuperview];
     //    self.mapView = mapView;
     //    [self.view addSubview:mapView];
+    
+    [self setBackMask];
     if (fabs(self.currentSpan - mapView.region.span.latitudeDelta) > 0.04) {
         [self applyMapViewMemoryHotFix];
         self.currentSpan = mapView.region.span.latitudeDelta;
@@ -275,6 +306,10 @@
 //            renderer.strokeColor = [UIColor greenColor];
 //        }
 //        return  renderer;
+    }else if ([overlay isKindOfClass:[MKPolygon class]]){
+        MKPolygonRenderer* renderer = [[MKPolygonRenderer alloc]initWithPolygon:(MKPolygon*)overlay];
+        renderer.fillColor = [[UIColor blackColor]colorWithAlphaComponent:0.35];
+        return  renderer;
     }
     
     return nil;

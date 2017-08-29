@@ -31,11 +31,14 @@
     NSLog(@"...VC dealloc");
 }
 - (IBAction)rightClick:(UIBarButtonItem *)sender {
+
     
-    UIStoryboard* storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ViewController* VC = [storyBoard instantiateViewControllerWithIdentifier:NSStringFromClass([ViewController class])];
+    [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"timeDemo://"]];
     
-    [self.navigationController pushViewController:VC animated:YES];
+//    UIStoryboard* storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    ViewController* VC = [storyBoard instantiateViewControllerWithIdentifier:NSStringFromClass([ViewController class])];
+//    
+//    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)phoneModel:(UIButton *)sender {
