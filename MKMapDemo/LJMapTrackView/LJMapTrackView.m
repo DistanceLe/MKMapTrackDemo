@@ -18,7 +18,7 @@
 @property(nonatomic, strong)CLLocationManager*  locationManager;
 
 @property(nonatomic, strong)NSMutableArray* locations;
-@property(nonatomic, strong)NSMutableArray* mapLocations;
+@property(nonatomic, strong)NSMutableArray<CLLocation *>* mapLocations;
 @property(nonatomic, strong)CLLocation*     currentLocation;
 @property(nonatomic, assign)CGFloat         currentSpan; //当前的跨度
 
@@ -124,21 +124,41 @@
             return;
         }
         
+        //替换方案:
+        tempArray = [NSMutableArray arrayWithArray:self.mapLocations];
+        
         //遍历所有点
         CLLocationCoordinate2D  pointCoords[tempArray.count];
         float velocitys[tempArray.count];
         
         for (NSInteger i = 0; i<tempArray.count; i++) {
             pointCoords[i] = tempArray[i].coordinate;
-//            velocitys[i] = tempArray[i].speed;
-            velocitys[i] = arc4random()%100/10.0;
+            velocitys[i] = tempArray[i].speed;
+//            velocitys[i] = arc4random()%100/10.0;
         }
         
         GradientPolylineOverlay* line = [[GradientPolylineOverlay alloc] initWithPoints:pointCoords velocity:velocitys count:tempArray.count];
 //        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
 //        line.subtitle = @"location";
+        
+        //替换方案:
+        if (self.mapView.overlays.count>0) {
+            for (id<MKOverlay> ovrelay in self.mapView.overlays) {
+                if ([ovrelay isKindOfClass:[GradientPolylineOverlay class]]) {
+                    [self.mapView removeOverlay:ovrelay];
+                }
+            }
+        }
+        
         [self.mapView addOverlay:line];
     }
+    if (self.mapLocations.count > 2) {
+        CLLocationCoordinate2D* startEnd = malloc(sizeof(CLLocationCoordinate2D)*2);
+        startEnd[0] = self.mapLocations.firstObject.coordinate;
+        startEnd[1] = self.mapLocations.lastObject.coordinate;
+        [self showStartAndEndAnnotationLocation:startEnd];
+    }
+    
 }
 
 -(void)addTrackMapPoint:(NSArray<CLLocation *> *)coordinates{
@@ -167,6 +187,13 @@
 //        MKPolyline* line = [MKPolyline polylineWithCoordinates:pointCoords count:tempArray.count];
 //        line.subtitle = @"map";
         [self.mapView addOverlay:line];
+    }
+    
+    if (self.mapLocations.count > 2) {
+        CLLocationCoordinate2D* startEnd = malloc(sizeof(CLLocationCoordinate2D)*2);
+        startEnd[0] = self.mapLocations.firstObject.coordinate;
+        startEnd[1] = self.mapLocations.lastObject.coordinate;
+        [self showStartAndEndAnnotationLocation:startEnd];
     }
 }
 
@@ -247,9 +274,43 @@
     [self.mapView insertOverlay:self.backMaskPolygon atIndex:0 level:MKOverlayLevelAboveRoads];
 }
 
+/**  添加 开始结束定位大头针 */
+-(void)showStartAndEndAnnotationLocation:(CLLocationCoordinate2D*)locations{
+    
+    if (self.mapView.annotations.count>0) {
+        for (id<MKAnnotation> annotation in self.mapView.annotations) {
+            if ([annotation isKindOfClass:[MKPointAnnotation class]]) {
+                if ([annotation.title isEqualToString:@"end"] ||
+                    [annotation.title isEqualToString:@"start"]) {
+                    [self.mapView removeAnnotation:annotation];
+                }
+            }
+        }
+    }
+    
+    {//start point
+        CLLocationCoordinate2D coordinate=locations[0];
+        MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
+        pointAnnotation.coordinate = coordinate;
+        pointAnnotation.title = @"start";
+        pointAnnotation.subtitle=@"start";
+        [self.mapView addAnnotation:pointAnnotation];
+    }
+    {//end point
+        CLLocationCoordinate2D coordinate=locations[1];
+        MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
+        pointAnnotation.coordinate = coordinate;
+        pointAnnotation.title = @"end";
+        pointAnnotation.subtitle=@"end";
+        [self.mapView addAnnotation:pointAnnotation];
+    }
+}
+
+
 #pragma mark - ================ Delegate ==================
 /**  地图区域改变时调用 */
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    /**  删除再重新加载的方式 不是太好 */
     //    [self.mapView removeFromSuperview];
     //    self.mapView = mapView;
     //    [self.view addSubview:mapView];
@@ -261,13 +322,8 @@
     }
 }
 
-//-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
-//
-//    NSLog(@"...%@", NSStringFromClass([annotation class]));
-//
-//    return nil;
-//}
 
+/**  高德地图的GPS定位点 */
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
     self.currentLocation = userLocation.location;
@@ -281,6 +337,8 @@
         MKCoordinateRegion region = MKCoordinateRegionMake(userLocation.coordinate, span);
         [mapView setRegion:region animated:YES];
     }
+    
+    /**  如果只开启地图定位，而不开启定位管理，程序不会在后台运行 */
     //    if (userLocation && !self.isWatchMode && self.isRun) {
     //        [self addTrackMapPoint:@[userLocation.location]];
     //    }
@@ -314,9 +372,39 @@
     
     return nil;
 }
-
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+//        MKAnnotationView* pointView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"mapLocation"];
+//        if (!pointView) {
+//            pointView = [[MKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"mapLocation"];
+//            pointView.enabled = NO;
+//            pointView.image = [UIImage imageNamed:@"mapLocation"];
+//        }
+//        return pointView;
+        return nil;
+    }else if ([annotation isKindOfClass:[MKPointAnnotation class]]){
+        MKAnnotationView* pointView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"point"];
+        if (!pointView) {
+            pointView = [[MKAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@"point"];
+            pointView.enabled = NO;
+            pointView.centerOffset = CGPointMake(0, -14);
+            pointView.image = nil;
+        }
+        if ([annotation.title isEqualToString:@"end"]) {
+            pointView.image = [UIImage imageNamed:@"endPoint"];
+            pointView.centerOffset = CGPointMake(10, -14);
+            
+        }else if([annotation.title isEqualToString:@"start"]){
+            pointView.image = [UIImage imageNamed:@"startPoint"];
+            pointView.centerOffset = CGPointMake(0, -14);
+        }
+        return pointView;
+    }
+    return  nil;
+}
 
 #pragma mark - ================ LocationDelegate ==================
+/**  定位出来的火星GPS点  和高德坐标系有偏移*/
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     
     if (locations.count && !self.isWatchMode && self.isRun) {

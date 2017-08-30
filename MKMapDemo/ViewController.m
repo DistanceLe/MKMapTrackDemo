@@ -65,8 +65,19 @@
     
     double latitude = self.currentLocation.latitude + arc4random()%100*0.000003;
     double longitude = self.currentLocation.longitude + arc4random()%100*0.000003;
+    double speed = arc4random()%100/10.0;
+    double altitude = arc4random()%300;
     
-    CLLocation* location = [[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+    
+    CLLocation* location = [[CLLocation alloc]initWithCoordinate:coordinate
+                                                        altitude:altitude
+                                              horizontalAccuracy:20
+                                                verticalAccuracy:20
+                                                          course:90
+                                                           speed:speed
+                                                       timestamp:[NSDate date]];
+    
     self.currentLocation = CLLocationCoordinate2DMake(latitude, longitude);
     [self.trackView addTrackPoint:@[location]];
     [self.trackView setMapCurrentLocation:location.coordinate];
