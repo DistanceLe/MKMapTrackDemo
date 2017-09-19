@@ -258,7 +258,9 @@
     CLLocationCoordinate2D leftBottom =[self.mapView convertPoint:CGPointMake(0, height) toCoordinateFromView:self];
     CLLocationCoordinate2D rightBottom =[self.mapView convertPoint:CGPointMake(width, height) toCoordinateFromView:self];
     CLLocationCoordinate2D  pointCoords[4];
-    CGFloat offset = 1;
+    CGFloat interval = self.mapView.region.span.latitudeDelta;
+    CGFloat offset = interval > 5 ? 0 : 10;
+    
     pointCoords[0] = CLLocationCoordinate2DMake(leftTop.latitude+offset, leftTop.longitude-offset);
     pointCoords[1] = CLLocationCoordinate2DMake(rightTop.latitude-offset, rightTop.longitude-offset);
     
